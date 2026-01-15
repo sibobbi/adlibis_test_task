@@ -10,6 +10,11 @@ class Comment extends Model
         'user_id',
         'content',
     ];
+    protected $hidden = [
+        'commentable_type',
+        'commentable_id',
+        'user_id'
+    ];
 
     public function commentable(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
@@ -24,5 +29,12 @@ class Comment extends Model
     public function comments(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(__CLASS__, 'commentable');
+    }
+
+    public function replies(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(__CLASS__, 'commentable')
+            ->with(['replies','user'])
+            ->orderBy('id');
     }
 }
