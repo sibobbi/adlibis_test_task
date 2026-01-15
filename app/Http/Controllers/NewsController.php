@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNewsRequest;
+use App\Models\Comment;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,14 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        return $news;
+        $comments = Comment::where('commentable_type', News::class)
+            ->where('commentable_id', $news->id)
+            ->with(['user', 'replies.user'])
+            ->cursorPaginate(10);
+
+        return response()->json([
+            'news' => $news,
+            'comments' => $comments,
+        ]);
     }
 }

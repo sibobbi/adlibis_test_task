@@ -16,7 +16,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('comments', [CommentController::class, 'store']);
     Route::put('comments/{comment}', [CommentController::class, 'update']);
     Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
-
-    Route::get('news/{news}/comments', [NewsCommentController::class, 'index']);
-    Route::get('videos/{video}/comments', [VideoPostCommentController::class, 'index']);
 });

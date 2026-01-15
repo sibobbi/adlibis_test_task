@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVideoPostRequest;
+use App\Models\Comment;
 use App\Models\VideoPost;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,16 @@ class VideoPostController extends Controller
         return VideoPost::create($data);
     }
 
-    public function show(VideoPost $videoPost)
+    public function show(VideoPost $video)
     {
-        return $videoPost;
+        $comments = Comment::where('commentable_type', VideoPost::class)
+            ->where('commentable_id', $video->id)
+            ->with(['user', 'replies.user'])
+            ->cursorPaginate(10);
+
+        return response()->json([
+            'videoPost' => $video,
+            'comments' => $comments,
+        ]);
     }
 }
