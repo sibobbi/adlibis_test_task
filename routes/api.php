@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\NewsCommentController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\VideoPostCommentController;
 use App\Http\Controllers\VideoPostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
