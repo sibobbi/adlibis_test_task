@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class CommentService
+class CommentAction
 {
     public function store(CommentDTO $data)
     {

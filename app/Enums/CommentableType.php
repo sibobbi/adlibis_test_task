@@ -10,7 +10,7 @@ enum CommentableType: string
     case VIDEO = 'video';
     case COMMENT = 'comment';
 
-    public static function forRequest(): array
+    public static function values(): array
     {
         return array_map(static fn(CommentableType $case) => $case->value, self::cases());
     }

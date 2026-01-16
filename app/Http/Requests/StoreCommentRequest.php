@@ -23,7 +23,7 @@ class StoreCommentRequest extends FormRequest
             'commentable_type' => [
                 'required',
                 'string',
-                Rule::in(CommentableType::forRequest()),
+                Rule::in(CommentableType::values()),
             ],
         ];
     }
