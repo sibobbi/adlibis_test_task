@@ -6,14 +6,14 @@ use App\DTO\CommentDTO;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
-use App\Services\CommentService;
+use App\Action\CommentService;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request, CommentService $commentService): CommentResource
     {
-        $dto = CommentDTO::fromArray($request->validated(), $request->user()->id);
+        $dto = CommentDTO::fromArray($request->validated(), $request->user()->id, $request->commentableTypeEnum());
 
         return CommentResource::make($commentService->store($dto));
     }

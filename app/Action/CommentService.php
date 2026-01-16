@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Action;
 
 use App\DTO\CommentDTO;
+use App\Enums\CommentableType;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use App\Models\News;
@@ -16,9 +17,9 @@ class CommentService
     public function store(CommentDTO $data)
     {
         $model = match ($data->commentableType) {
-            'news' => new News(),
-            'video' => new VideoPost(),
-            'comment' => new Comment(),
+            CommentableType::NEWS => new News(),
+            CommentableType::VIDEO => new VideoPost(),
+            CommentableType::COMMENT => new Comment(),
             default => throw new UnprocessableEntityHttpException('Invalid commentable_type')
         };
 
