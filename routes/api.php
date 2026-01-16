@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::apiResource('news', NewsController::class);
-    Route::apiResource('videos', VideoPostController::class);
-
-    Route::post('comments', [CommentController::class, 'store']);
-    Route::put('comments/{comment}', [CommentController::class, 'update']);
-    Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+    Route::apiResource('news', NewsController::class)->only('index','store','show');
+    Route::apiResource('videos', VideoPostController::class)->only('index','store','show');
+    Route::apiResource('comments', CommentController::class)->only('index','store','show','destroy');
 });

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\ContentDTO;
 use App\Http\Requests\StoreNewsRequest;
+use App\Http\Resources\NewsResource;
 use App\Models\Comment;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -11,14 +13,14 @@ class NewsController extends Controller
 {
     public function index()
     {
-        return News::paginate(10);
+        return NewsResource::collection(News::paginate(10));
     }
 
     public function store(StoreNewsRequest $request)
     {
-        $data = $request->validated();
+        $data = ContentDTO::fromArray($request->validated());
 
-        return News::create($data);
+        return News::create($data->toArray());
     }
 
     public function show(News $news)
@@ -28,9 +30,8 @@ class NewsController extends Controller
             ->with(['user', 'replies.user'])
             ->cursorPaginate(10);
 
-        return response()->json([
-            'news' => $news,
-            'comments' => $comments,
-        ]);
+        $news->setRelation('comments', $comments);
+
+        return NewsResource::make($news);
     }
 }
