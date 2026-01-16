@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
 {
@@ -10,28 +15,23 @@ class Comment extends Model
         'user_id',
         'content',
     ];
-    protected $hidden = [
-        'commentable_type',
-        'commentable_id',
-        'user_id'
-    ];
 
-    public function commentable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function commentable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function comments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function comments(): MorphMany
     {
         return $this->morphMany(__CLASS__, 'commentable');
     }
 
-    public function replies(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function replies(): MorphMany
     {
         return $this->morphMany(__CLASS__, 'commentable')
             ->with(['replies','user'])

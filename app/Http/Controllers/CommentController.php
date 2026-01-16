@@ -4,33 +4,31 @@ namespace App\Http\Controllers;
 
 use App\DTO\CommentDTO;
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
-use App\Models\News;
-use App\Models\VideoPost;
 use App\Services\CommentService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(StoreCommentRequest $request, CommentService $storeCommentService)
+    public function store(StoreCommentRequest $request, CommentService $commentService): CommentResource
     {
         $dto = CommentDTO::fromArray($request->validated(), $request->user()->id);
 
-        return $storeCommentService->store($dto);
+        return CommentResource::make($commentService->store($dto));
     }
 
-    public function update(Comment $comment, Request $request)
+    public function update(Comment $comment, Request $request): CommentResource
     {
 
         $dto = CommentDTO::contentOnly($request->get('content'));
 
         $comment->update(['content' => $dto->content]);
 
-        return $comment;
+        return CommentResource::make($comment);
     }
 
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment): \Illuminate\Http\Response
     {
         $comment->delete();
 
